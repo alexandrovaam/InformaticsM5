@@ -1,0 +1,47 @@
+import java.util.Scanner;
+import java.util.Random;
+public class Game{
+    public static void main(String[]args){
+
+        Random rand = new Random(); // create random object.
+        int randomNumber = 0;
+        randomNumber = rand.nextInt(100) + 1;
+
+        welcome_message();
+
+        int attempt=0;
+        Scanner scanner = new Scanner(System.in);
+
+        boolean input = false;
+            while(!input) {
+                attempt++;
+                if (scanner.hasNextInt()) {
+                    int number = scanner.nextInt();
+                    System.out.println("You entered the number : " + number);
+                    if(number< randomNumber) {
+                        System.out.println("Try a bigger number");
+                    }
+                    else if(number>randomNumber){
+                        System.out.println("Try a smaller number");
+                    }
+                    else{
+                        System.out.println("You guessed the number!!!  - " + randomNumber);
+                        System.out.println("You succeeded in " + attempt + " attemps!");
+                    }
+                } else {
+                    String invalidInput = scanner.next();
+                    if(invalidInput.equals("quit")) {
+                        System.out.println("You quit the game");
+                        input=true;
+                    }
+                    else {
+                        System.out.println("Error : " + invalidInput + " is not a valid number.");
+                    }
+                }
+            }
+    }
+    public static void welcome_message(){
+        System.out.println("Welcome to the guessing game!");
+        System.out.println("Enter a number between 1 and 100. Type quit to exit.");
+    }
+    }
