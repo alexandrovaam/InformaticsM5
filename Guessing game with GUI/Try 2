@@ -1,0 +1,80 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Scanner;
+import java.util.Random;
+public class Main {
+    public static void main(String[] args) {
+
+        Random rand = new Random();
+        int targetNumber = rand.nextInt(100) + 1;
+
+        JFrame frame = new JFrame("Guessing Game");
+        frame.setSize(400, 300);
+        frame.setLayout(null);
+
+        JLabel labelWelcome = new JLabel("Welcome to the Guessing Game!");
+        labelWelcome.setBounds(20, 10, 300, 20);
+        frame.add(labelWelcome);
+
+        JLabel instructions = new JLabel("Guess a number between 1 and 100:");
+        instructions.setBounds(20, 40, 300, 20);
+        frame.add(instructions);
+
+        JTextField guessField = new JTextField();
+        guessField.setBounds(20, 70, 100, 25);
+        frame.add(guessField);
+
+        JLabel feedbackLabel = new JLabel();
+        feedbackLabel.setBounds(20, 110, 300, 20);
+        frame.add(feedbackLabel);
+
+        JLabel attemptsLabel = new JLabel("Attempts: 0");
+        attemptsLabel.setBounds(20, 140, 300, 20);
+        frame.add(attemptsLabel);
+
+        JLabel resultLabel = new JLabel("");
+        resultLabel.setBounds(20, 180, 350, 20);
+        frame.add(resultLabel);
+
+        JButton uploadButton = new JButton("Upload");
+        uploadButton.setBounds(150, 70, 100, 25);
+        frame.add(uploadButton);
+
+        JButton quitButton = new JButton("Quit");
+        quitButton.setBounds(270, 70, 100, 25);
+        frame.add(quitButton);
+
+        int attempts = 0;
+
+        frame.setVisible(true);
+
+        uploadButton.addActionListener(new ActionListener (){
+            public void actionPerformed(ActionEvent e){
+            String userInput = guessField.getText();
+
+            boolean input = false;
+            while(!input) {
+                int userGuess = Integer.parseInt(userInput);
+                attempts++;
+                if (userGuess < 1 || userGuess > 100) {
+                    feedbackLabel.setText("Invalid input. Please enter a number between 1 and 100.");
+                } else if (userGuess < targetNumber) {
+                    feedbackLabel.setText("Too low! Try again.");
+                } else if (userGuess > targetNumber) {
+                    feedbackLabel.setText("Too high! Try again.");
+                } else if (userGuess == targetNumber) {
+                    feedbackLabel.setText("Correct! You guessed the number!");
+                }
+                attemptsLabel.setText("Attempts: " + attempts);
+            });
+            }
+        }
+        quitButton.addActionListener(new ActionListener (){
+            public void actionPerformed(ActionEvent e){
+                resultLabel.setText("You quit the game. Thanks for playing!");
+            }
+        });
+    }
+}
