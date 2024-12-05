@@ -1,0 +1,81 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Scanner;
+import java.util.Random;
+
+public class Main{
+    public static void main(String[]args)
+    {
+        Random rand = new Random(); // create random object.
+        int Number = 0;
+        Number = rand.nextInt(100) + 1;
+
+        JFrame frame = new JFrame("Guessing Game");
+        JLabel label = new JLabel("0");
+        JButton click = new JButton("click me");
+        JButton quit = new JButton("reset");
+        JButton guess = new JButton("guess");
+        JLabel attempts = new JLabel("0");
+
+
+        JPanel panel_welcome = new JPanel(new FlowLayout());
+        JLabel label_welcome = new JLabel("Welcome to the Guessing Game!\nEnter a number between 1 and 100. Type quit to exit.");
+        panel_welcome.add(label_welcome);
+
+        JTextField textBox = new JTextField(8);
+        panel_welcome.add(textBox);
+
+        frame.setLayout(new GridLayout(2,3));
+        frame.setSize(500, 500);
+        frame.add(label);
+        frame.add(quit);
+        frame.add(click);
+
+        frame.setVisible(true);
+
+        guess.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String answer = textBox.getText();{
+                    if (Integer.parseInt(guess.getText())>0 && Integer.parseInt(guess.getText())<=100) {
+                        int guess = Integer.parseInt(answer);
+                        label.setText("You entered the number : " + guess);
+                        if(guess< Number) {
+                            label.setText("Try a bigger number");
+                        }
+                        else if(guess>Number){
+                            label.setText("Try a smaller number");
+                        }
+                        else{
+                            label.setText("You guessed the number!!!  - " + Number);
+                            label.setText("You succeeded in " + attempts + " attemps!");
+                        }
+                    } else if(answer.equals("quit")){
+                            label.setText("Thank you for playing! The correct number was " + guess + " and you had " + attempts + " attempts.");
+                        }else{
+                            label.setText("Invalid input. Try again.");
+                        }
+                    }
+                }
+            });
+                }
+
+        /*click.addActionListener(new ActionListener (){
+            public void actionPerformed(ActionEvent e){
+                int attempts = Integer.parseInt(label.getText());
+                attempts++;
+                label.setText(String.valueOf(attempts));
+            }
+        });
+
+        quit.addActionListener(new ActionListener (){
+            public void actionPerformed(ActionEvent e){
+                int make0 = Integer.parseInt(label.getText());
+                make0 = 0;
+                label.setText(String.valueOf(make0));
+            }
+        });
+       */
+
+ }
