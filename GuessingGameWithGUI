@@ -13,6 +13,7 @@ public class Main{
         Number = rand.nextInt(100) + 1;
 
         JFrame frame = new JFrame("Guessing Game");
+        frame.setSize(1000, 1000);
         JLabel label = new JLabel("0");
         JButton click = new JButton("click me");
         JButton quit = new JButton("reset");
