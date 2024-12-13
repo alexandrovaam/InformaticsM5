@@ -1,0 +1,46 @@
+public class Main{
+    public static void main(String[] args){
+
+    }
+}
+class Product {
+    private String name;
+    private double price;
+    private int quantity;
+
+    public Product(String name, double price, int quantity){
+        this.name=name;
+        this.price=price;
+        this.quantity=quantity;
+    }
+    public String getName(){
+        return name;
+    }
+    public void setName{
+
+    }
+    public double getPrice(){
+        return price;
+    }
+    public void setPrice(){
+
+    }
+    public int getQuantity(){
+        return quantity;
+    }
+    public void setQuantity(){
+
+    }
+    public void Display(){
+        System.out.println("name: "name + "; price: "+ price+ "; quantity: "+quantity);
+    }
+}
+class Inventory{
+    private Product product1;
+    private Product product2;
+    private Product product3;
+
+    public Inventory(Product product1,Product product2,Product product3){
+        this.product1=product1()
+    }
+}
