@@ -1,0 +1,177 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+class Product {
+   private String name;
+   private double price;
+   private int quantity;
+
+   public Product(String name, double price, int quantity) {
+       this.name = name;
+       this.price = price;
+       this.quantity = quantity;
+   }
+   public String getName() {
+       return name;
+   }
+   public void setPrice(double price) {
+       this.price = price;
+   }
+   public double getPrice() {
+       return price;
+   }
+   public void setQuantity(int quantity) {
+       this.quantity = quantity;
+   }
+   public int getQuantity() {
+       return quantity;
+   }
+   public String getDetails() {
+       return "Name: " + name + ", Price: $" + price + ", Quantity: " + quantity;
+   }
+}
+class Inventory {
+   private Product[] products;
+   private int count;
+
+   public Inventory() {
+       products = new Product[3];
+       count = 0;
+   }
+   public String addProduct(String name, double price, int quantity) {
+       if (count >= 3) {
+           return "Inventory is full. Cannot add more products.";
+       }
+       products[count++] = new Product(name, price, quantity);
+       return "Product added successfully!";
+   }
+   public String updateProduct(String name, double price, int quantity) {
+       for (int i = 0; i < count; i++) {
+           if (products[i].getName().equalsIgnoreCase(name)) {
+               products[i].setPrice(price);
+               products[i].setQuantity(quantity);
+               return "Product updated successfully!";
+           }
+       }
+       return "Product not found.";
+   }
+   public String displayAllProducts() {
+       if (count == 0) {
+           return "No products in the inventory.";
+       }
+       StringBuilder details = new StringBuilder();
+       for (int i = 0; i < count; i++) {
+           details.append(products[i].getDetails()).append("\n");
+       }
+       return details.toString();
+   }
+}
+public class InventoryManagementSystem{
+   public static void main(String[] args) {
+       Inventory inventory = new Inventory();
+
+       JFrame frame = new JFrame("Inventory Management System");
+       frame.setSize(600, 700);
+       JPanel panel = new JPanel();
+       panel.setLayout(new GridLayout(9, 1, 10, 10));
+       panel.setBackground(new Color(230, 240, 255));
+       Font font = new Font("Arial", Font.PLAIN, 18);
+
+       JLabel nameLabel = new JLabel("Name:");
+       nameLabel.setFont(font);
+       nameLabel.setForeground(Color.BLACK);
+       JTextField nameField = new JTextField(15);
+       nameField.setFont(font);
+
+       JLabel priceLabel = new JLabel("Price:");
+       priceLabel.setFont(font);
+       priceLabel.setForeground(Color.BLACK);
+       JTextField priceField = new JTextField(10);
+       priceField.setFont(font);
+
+       JLabel quantityLabel = new JLabel("Quantity:");
+       quantityLabel.setFont(font);
+       quantityLabel.setForeground(Color.BLACK);
+       JTextField quantityField = new JTextField(10);
+       quantityField.setFont(font);
+
+       JTextArea displayArea = new JTextArea(10, 30);
+       displayArea.setEditable(false);
+       displayArea.setBackground(new Color(245, 245, 245));
+       displayArea.setBorder(BorderFactory.createLineBorder(Color.RED, 2));
+       displayArea.setFont(font);
+
+       JButton addButton = new JButton("Add Product");
+       addButton.setFont(font);
+       addButton.setBackground(new Color(230, 173, 173));
+       addButton.setForeground(Color.black);
+       JButton updateButton = new JButton("Update Product");
+       updateButton.setFont(font);
+       updateButton.setBackground(new Color(230, 173, 173));
+       updateButton.setForeground(Color.black);
+       JButton displayButton = new JButton("Display Products");
+       displayButton.setFont(font);
+       displayButton.setBackground(new Color(230, 173, 173));
+       displayButton.setForeground(Color.BLACK);
+
+       panel.add(nameLabel);
+       panel.add(nameField);
+       panel.add(priceLabel);
+       panel.add(priceField);
+       panel.add(quantityLabel);
+       panel.add(quantityField);
+       panel.add(addButton);
+       panel.add(updateButton);
+       panel.add(displayButton);
+
+       JPanel mainPanel = new JPanel();
+       mainPanel.setLayout(new BorderLayout());
+       mainPanel.add(panel, BorderLayout.NORTH);
+       mainPanel.add(new JScrollPane(displayArea), BorderLayout.CENTER);
+
+       frame.add(mainPanel);
+       frame.setVisible(true);
+
+       addButton.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               String name = nameField.getText();
+               try {
+                   double price = Double.parseDouble(priceField.getText());
+                   int quantity = Integer.parseInt(quantityField.getText());
+                   if (price < 0 || quantity < 0) {
+                       displayArea.setText("Price and quantity must be non-negative.");
+                   } else {
+                       displayArea.setText(inventory.addProduct(name, price, quantity));
+                   }
+               } catch (NumberFormatException ex) {
+                   displayArea.setText("Invalid input. Enter valid numbers for price and quantity.");
+               }
+           }
+       });
+       updateButton.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               String name = nameField.getText();
+               try {
+                   double price = Double.parseDouble(priceField.getText());
+                   int quantity = Integer.parseInt(quantityField.getText());
+                   if (price < 0 || quantity < 0) {
+                       displayArea.setText("Price and quantity must be non-negative.");
+                   } else {
+                       displayArea.setText(inventory.updateProduct(name, price, quantity));
+                   }
+               } catch (NumberFormatException ex) {
+                   displayArea.setText("Invalid input. Enter valid numbers for price and quantity.");
+               }
+           }
+       });
+       displayButton.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               displayArea.setText(inventory.displayAllProducts());
+           }
+       });
+   }
+}
