@@ -1,0 +1,127 @@
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+
+class Movie {
+    private String title;
+    private String genre;
+
+    public Movie(String title, String genre) {
+
+        this.title = title;
+        this.genre = genre;
+    }
+    public String getTitle() {
+        return title;
+    }
+    public String getGenre() {
+          return genre;
+    }
+}
+public class Main {
+    private JFrame frame;
+    private JTextField titleField;
+    private JTextField searchField;
+    private JComboBox<String> genreBox;
+    private JButton addButton;
+    private JButton sortTitleButton;
+    private JButton sortGenreButton;
+    private JButton searchButton;
+    private JLabel movieCountLabel;
+    private JTable movieTable;
+    private DefaultTableModel tableModel;
+    private ArrayList<Movie> movieList;
+
+    public Main() {
+        movieList = new ArrayList<>();
+        frame = new JFrame("Movie Collection Manager");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(700, 500);
+        frame.setLayout(null);
+
+        titleField = new JTextField(20);
+        titleField.setBounds(40, 20, 220, 50);
+        frame.add(titleField);
+
+        genreBox = new JComboBox<>(new String[]{"Action", "Comedy", "Horror", "Drama", "Sci-Fi"});
+        genreBox.setBounds(280, 20, 220, 50);
+        frame.add(genreBox);
+        
+        addButton = new JButton("Add Movie");
+        addButton.setBounds(40, 80, 160, 50);
+        frame.add(addButton);
+
+        tableModel = new DefaultTableModel(new String[]{"Title", "Genre"}, 0);
+        movieTable = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(movieTable);
+        scrollPane.setBounds(40, 140, 520, 170);
+        frame.add(scrollPane);
+
+        sortTitleButton = new JButton("Sort by Title");
+        sortTitleButton.setBounds(40, 320, 160, 50);
+        frame.add(sortTitleButton);
+
+        sortGenreButton = new JButton("Sort by Genre");
+        sortGenreButton.setBounds(220, 320, 160, 50);
+        frame.add(sortGenreButton);
+
+        searchField = new JTextField(12);
+        searchField.setBounds(40, 390, 220, 50);
+        frame.add(searchField);
+
+        searchButton = new JButton("Search");
+        searchButton.setBounds(280, 390, 140, 50);
+        frame.add(searchButton);
+
+        movieCountLabel = new JLabel("Total Movies: 0");
+        movieCountLabel.setBounds(440, 390, 200, 50);
+        frame.add(movieCountLabel);
+
+        addButton.addActionListener(e -> addMovie());
+        sortTitleButton.addActionListener(e -> sortMoviesByTitle());
+        sortGenreButton.addActionListener(e -> sortMoviesByGenre());
+        searchButton.addActionListener(e -> searchMovie());
+
+        frame.setVisible(true);
+    }
+    private void addMovie() {
+        String title = titleField.getText().trim();
+        String genre = (String) genreBox.getSelectedItem();
+        if (!title.isEmpty()) {
+            movieList.add(new Movie(title, genre));
+            updateTable();
+            titleField.setText("");
+        }
+    }
+    private void updateTable() {
+        tableModel.setRowCount(0);
+        for (Movie movie : movieList) {
+            tableModel.addRow(new Object[]{movie.getTitle(), movie.getGenre()});
+        }
+        movieCountLabel.setText("Total Movies: " + movieList.size());
+    }
+    private void sortMoviesByTitle() {
+        movieList.sort(Comparator.comparing(Movie::getTitle));
+        updateTable();
+    }
+    private void sortMoviesByGenre() {
+        movieList.sort(Comparator.comparing(Movie::getGenre));
+        updateTable();
+    }
+    private void searchMovie() {
+        String searchText = searchField.getText().trim().toLowerCase();
+        if (!searchText.isEmpty()) {
+            for (int i = 0; i < movieList.size(); i++) {
+                if (movieList.get(i).getTitle().toLowerCase().contains(searchText)) {
+                    movieTable.setRowSelectionInterval(i, i);
+                    return;
+                }
+            }
+        }
+    }
+    public static void main(String[] args) {
+        new Main();
+    }
+}
